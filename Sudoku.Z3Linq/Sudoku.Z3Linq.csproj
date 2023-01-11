@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Sudoku.Shared\Sudoku.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="ExpressionUtils">
+        <HintPath>References\ExpressionUtils.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.Z3">
+        <HintPath>References\Microsoft.Z3.dll</HintPath>
+      </Reference>
+      <Reference Include="Z3.LinqBinding">
+        <HintPath>References\Z3.LinqBinding.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>
