@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.Loader;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Sudoku.Shared
 {
     public class SudokuGrid : ICloneable
     {
 
-       
+
         /// <summary>
         /// The list of row indexes is used many times and thus stored for quicker access.
         /// </summary>
@@ -21,7 +23,7 @@ namespace Sudoku.Shared
 
         private static readonly (int row, int column)[][] _LineNeighbours =
             NeighbourIndices.Select(r => NeighbourIndices.Select(c => (r, c)).ToArray()).ToArray();
-            
+
 
         private static readonly (int row, int column)[][] _ColumnNeighbours =
             NeighbourIndices.Select(c => NeighbourIndices.Select(r => (r, c)).ToArray()).ToArray();
@@ -43,7 +45,7 @@ namespace Sudoku.Shared
                 {
                     for (int c = 0; c < 3; c++)
                     {
-                        currentBox.Add((startIndex.row+r, startIndex.column+c));
+                        currentBox.Add((startIndex.row + r, startIndex.column + c));
                     }
                 }
 
@@ -51,6 +53,61 @@ namespace Sudoku.Shared
             }
 
             return toreturn;
+        }
+
+
+        static bool IsSafe(int node, int c)
+        {
+            int row = node / 9;
+            int col = node % 9;
+            int[,] grid = new int[9, 9];
+
+            for (int i = 0; i < 9; i++)
+            {
+
+
+                if (grid[row, i] == c || grid[i, col] == c)
+                    return false;
+            }
+
+            int rowStart = (row / 3) * 3;
+            int colStart = (col / 3) * 3;
+
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if (grid[rowStart + i, colStart + j] == c)
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        static bool GraphColor(int node)
+        {
+            if (node == 81)
+                return true;
+            int[,] grid = new int[9, 9];
+            int row = node / 9;
+            int col = node % 9;
+
+            if (grid[row, col] != 0)
+                return GraphColor(node + 1);
+
+            for (int c = 1; c <= 9; c++)
+            {
+                if (IsSafe(node, c))
+                {
+                    grid[row, col] = c;
+                    if (GraphColor(node + 1))
+                        return true;
+                    grid[row, col] = 0;
+                }
+            }
+
+            return false;
         }
 
         public static readonly (int row, int column)[][][] CellNeighbours;
@@ -65,7 +122,7 @@ namespace Sudoku.Shared
                 foreach (var columnIndex in NeighbourIndices)
                 {
                     var cellVoisinage = new List<(int row, int column)>();
-                    
+
                     foreach (var voisinage in AllNeighbours)
                     {
                         if (voisinage.Contains((rowIndex, columnIndex)))
@@ -82,17 +139,17 @@ namespace Sudoku.Shared
                     }
                     CellNeighbours[rowIndex][columnIndex] = cellVoisinage.ToArray();
                 }
-                
+
             }
         }
 
-        
+
 
         public SudokuGrid()
         {
         }
 
-        
+
 
         // The List property makes it easier to manipulate cells,
         public int[][] Cells { get; set; } = NeighbourIndices.Select(r => new int[9]).ToArray();
@@ -152,7 +209,7 @@ namespace Sudoku.Shared
             return output.ToString();
         }
 
-       
+
 
 
         public int[] GetAvailableNumbers(int x, int y)
@@ -173,7 +230,7 @@ namespace Sudoku.Shared
                 }
             }
 
-            
+
             List<int> res = new List<int>();
 
             for (int i = 0; i < 9; i++)
@@ -248,7 +305,7 @@ namespace Sudoku.Shared
 
                         // we empty the current row collector to start building a new row
                         rowCells.Clear();
-                        
+
                     }
 
                     // when 9 rows are collected, we create a Sudoku and start collecting rows again.
@@ -283,11 +340,11 @@ namespace Sudoku.Shared
 
         public SudokuGrid CloneSudoku()
         {
-            return new SudokuGrid(){Cells = this.Cells.Select(r=>r.Select(val=>val).ToArray()).ToArray()};
+            return new SudokuGrid() { Cells = this.Cells.Select(r => r.Select(val => val).ToArray()).ToArray() };
         }
 
 
-        private static IDictionary<string,Lazy<ISudokuSolver>> _CachedSolvers;
+        private static IDictionary<string, Lazy<ISudokuSolver>> _CachedSolvers;
 
         public static IDictionary<string, Lazy<ISudokuSolver>> GetSolvers()
         {
@@ -309,7 +366,7 @@ namespace Sudoku.Shared
                                 {
                                     try
                                     {
-                                        var solver = new Lazy<ISudokuSolver>(()=>(ISudokuSolver)Activator.CreateInstance(type));
+                                        var solver = new Lazy<ISudokuSolver>(() => (ISudokuSolver)Activator.CreateInstance(type));
                                         solvers.Add(type.Name, solver);
                                     }
                                     catch (Exception e)
@@ -346,19 +403,146 @@ namespace Sudoku.Shared
             {
                 foreach (var colIndex in NeighbourIndices)
                 {
-                    if (originalPuzzle.Cells[rowIndex][colIndex]>0 && originalPuzzle.Cells[rowIndex][colIndex] != Cells[rowIndex][colIndex])
+                    if (originalPuzzle.Cells[rowIndex][colIndex] > 0 && originalPuzzle.Cells[rowIndex][colIndex] != Cells[rowIndex][colIndex])
                     {
                         toReturn += 1;
                     }
                 }
             }
-            
+
             return toReturn;
         }
 
         public bool IsValid(SudokuGrid originalPuzzle)
         {
             return NbErrors(originalPuzzle) == 0;
+        }
+
+
+
+
+        
+
+            private Node[,] _nodes;
+        
+            public bool SudokuSolver(SudokuGrid grid)
+            {
+                var cell = grid.Cells;
+                _nodes = new Node[9, 9];
+
+                for (int row = 0; row < 9; row++)
+                {
+                    for (int col = 0; col < 9; col++)
+                    {
+                        _nodes[row, col] = new Node(row, col, cell[row][col]);
+                    }
+                }
+                return true;
+            }
+
+        public bool Solve(Node[,] _nodes, SudokuGrid grid)
+        {
+            Console.WriteLine("0");
+            var cell = grid.Cells;
+            while (!IsColoringComplete(grid))
+            {
+                for (int row = 0; row < 9; row++)
+                {
+                    for (int col = 0; col < 9; col++)
+                    {
+                        if (cell[row][col] == 0)
+                        {
+                            for (int value = 1; value <= 9; value++)
+                            {
+                                
+
+                                if (IsValid(row, col, value, grid))
+                                {
+                                    _nodes[row, col].Value = value;
+                                    cell[row][col] = value;
+                                    Console.WriteLine("lol");
+                                    _nodes[row, col].Color = value;
+
+                                    if (Solve(_nodes, grid))
+                                    {
+                                        Console.WriteLine("lol2");
+                                        return true;
+                                    }
+                                    _nodes[row, col].Value = 0;
+                                    cell[row][col] = 0;
+                                    Console.WriteLine("lol3");
+                                    _nodes[row, col].Color = 0;
+                                }
+                            }
+                            Console.WriteLine("lol4");
+                            return false;
+                        }
+                    }
+                }
+
+            }
+            Console.WriteLine("lol5");
+            return true;
+        }
+
+        private int GetNextAvailableColor(int row, int col, SudokuGrid grid)
+        {
+            for (int value = 1; value <= 9; value++)
+            {
+                if (IsValid(row, col, value, grid))
+                    return value;
+            }
+
+            return 0;
+        }
+
+        private bool IsValid(int row, int col, int value,SudokuGrid grid)
+            {
+            var cell = grid.Cells;
+            // Check row
+            for (int i = 0; i < 9; i++)
+                {
+                    if (cell[row][i] == value)
+                        return false;
+                }
+
+                // Check column
+                for (int i = 0; i < 9; i++)
+                {
+                    if (cell[i][col] == value)
+                        return false;
+                }
+
+                // Check 3x3 subgrid
+                int subGridRow = row - row % 3;
+                int subGridCol = col - col % 3;
+
+                for (int i = subGridRow; i < subGridRow + 3; i++)
+                {
+                    for (int j = subGridCol; j < subGridCol + 3; j++)
+                    {
+                        if (cell[i][j] == value)
+                            return false;
+                    }
+                }
+
+                return true;
+
+            }
+
+        private bool IsColoringComplete(SudokuGrid grid)
+        {
+            var cell = grid.Cells;
+            for (int row = 0; row < 9; row++)
+            {
+                for (int col = 0; col < 9; col++)
+                {
+                    if (cell[row][col] == 0)
+                        return false;
+                }
+            }
+
+            return true;
         }
 
     }
