@@ -434,7 +434,7 @@ namespace Sudoku.Shared
                 {
                     for (int col = 0; col < 9; col++)
                     {
-                        _nodes[row, col] = new Node(row, col, cell[row][col]);
+                        _nodes[row, col] = new Node(row, col, cell[row][col]); //jai copi colle cette partie sur la class 1 car je voulais utiliser _nodes
                     }
                 }
                 return true;
@@ -444,37 +444,37 @@ namespace Sudoku.Shared
         {
             Console.WriteLine("0");
             var cell = grid.Cells;
-            while (!IsColoringComplete(grid))
+            while (!IsColoringComplete(grid)) //tant qu'il y a de zero
             {
                 for (int row = 0; row < 9; row++)
                 {
                     for (int col = 0; col < 9; col++)
                     {
-                        if (cell[row][col] == 0)
+                        if (cell[row][col] == 0) // si la valeur est 0
                         {
-                            for (int value = 1; value <= 9; value++)
+                            for (int value = 1; value <= 9; value++) // on teste toutes les valeurs possibles
                             {
                                 
 
-                                if (IsValid(row, col, value, grid))
+                                if (IsValid(row, col, value, grid)) // et on verifie que value n'est pas sur la meme ligne colonne ou carre
                                 {
                                     _nodes[row, col].Value = value;
-                                    cell[row][col] = value;
+                                    cell[row][col] = value;// si c bon on affecte value a cell
                                     Console.WriteLine("lol");
                                     _nodes[row, col].Color = value;
 
-                                    if (Solve(_nodes, grid))
+                                    if (Solve(_nodes, grid))//et on relance pour remplir les autres cases a valeur zero
                                     {
                                         Console.WriteLine("lol2");
                                         return true;
                                     }
                                     _nodes[row, col].Value = 0;
-                                    cell[row][col] = 0;
+                                    cell[row][col] = 0; //si il exite deja cette valeur sur la meme ligne colonne ou carre, on la remet a 0
                                     Console.WriteLine("lol3");
                                     _nodes[row, col].Color = 0;
                                 }
                             }
-                            Console.WriteLine("lol4");
+                            Console.WriteLine("lol4");//si la case est deja rempli
                             return false;
                         }
                     }
@@ -502,14 +502,14 @@ namespace Sudoku.Shared
             // Check row
             for (int i = 0; i < 9; i++)
                 {
-                    if (cell[row][i] == value)
+                    if (cell[row][i] == value)// on verifie si value exitste deja sur toute la ligne
                         return false;
                 }
 
                 // Check column
                 for (int i = 0; i < 9; i++)
                 {
-                    if (cell[i][col] == value)
+                    if (cell[i][col] == value)// on verifie si value existe deja sur toute la colonne
                         return false;
                 }
 
@@ -521,7 +521,7 @@ namespace Sudoku.Shared
                 {
                     for (int j = subGridCol; j < subGridCol + 3; j++)
                     {
-                        if (cell[i][j] == value)
+                        if (cell[i][j] == value) // on verifie si value existe deja sur le carre
                             return false;
                     }
                 }
@@ -537,7 +537,7 @@ namespace Sudoku.Shared
             {
                 for (int col = 0; col < 9; col++)
                 {
-                    if (cell[row][col] == 0)
+                    if (cell[row][col] == 0) //si cell est egale a 0
                         return false;
                 }
             }
