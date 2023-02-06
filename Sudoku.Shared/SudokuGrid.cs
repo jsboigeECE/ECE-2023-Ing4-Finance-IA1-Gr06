@@ -450,38 +450,62 @@ namespace Sudoku.Shared
                 {
                     for (int col = 0; col < 9; col++)
                     {
-                        if (cell[row][col] == 0) // si la valeur est 0
+                        if (cell[row][col] == 0)
                         {
-                            for (int value = 1; value <= 9; value++) // on teste toutes les valeurs possibles
+                            bool[] possibleColors = new bool[10];
+                            for (int i = 0; i < 9; i++)
                             {
-                                
-
-                                if (IsValid(row, col, value, grid)) // et on verifie que value n'est pas sur la meme ligne colonne ou carre
+                                if (cell[row][i] != 0)
                                 {
-                                    _nodes[row, col].Value = value;
-                                    cell[row][col] = value;// si c bon on affecte value a cell
-                                    Console.WriteLine("lol");
-                                    _nodes[row, col].Color = value;
+                                    possibleColors[cell[row][i]] = true;
+                                    
+                                }
+                                if (cell[i][col] != 0)
+                                {
+                                    possibleColors[cell[i][col]] = true;
+                                }
+                            }
 
-                                    if (Solve(_nodes, grid))//et on relance pour remplir les autres cases a valeur zero
+                            int rowStart = (row / 3) * 3;
+                            int colStart = (col / 3) * 3;
+                            for (int i = 0; i < 3; i++)
+                            {
+                                for (int j = 0; j < 3; j++)
+                                {
+                                    if (cell[rowStart + i][colStart + j] != 0)
                                     {
-                                        Console.WriteLine("lol2");
+                                        possibleColors[cell[rowStart + i][colStart + j]] = true;
+                                    }
+                                }
+                            }
+
+                            int color = 1;
+                            for (; color <= 9; color++)
+                            {
+                                if (!possibleColors[color])
+                                {
+                                    cell[row][col] = color;
+                                    _nodes[row, col].Value = color;
+                                    _nodes[row, col].Color = color;
+
+                                    if (Solve(_nodes, grid))
+                                    {
                                         return true;
                                     }
+
+                                    cell[row][col] = 0;
                                     _nodes[row, col].Value = 0;
-                                    cell[row][col] = 0; //si il exite deja cette valeur sur la meme ligne colonne ou carre, on la remet a 0
-                                    Console.WriteLine("lol3");
                                     _nodes[row, col].Color = 0;
                                 }
                             }
-                            Console.WriteLine("lol4");//si la case est deja rempli
                             return false;
+                            
                         }
                     }
                 }
 
             }
-            Console.WriteLine("lol5");
+            Console.WriteLine("lol6");
             return true;
         }
 
