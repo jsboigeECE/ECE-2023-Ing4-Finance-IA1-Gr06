@@ -6,12 +6,13 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Loader;
 using System.Text;
+using Z3.LinqBinding;
 
 namespace Sudoku.Shared
 {
     public class SudokuGrid : ICloneable
     {
-
+        
        
         /// <summary>
         /// The list of row indexes is used many times and thus stored for quicker access.
@@ -98,8 +99,91 @@ namespace Sudoku.Shared
         public int[][] Cells { get; set; } = NeighbourIndices.Select(r => new int[9]).ToArray();
 
 
+        
+        public Theorem<SudokuGrid> CreateTheorem(Z3Context context)
+      {
+         var toReturn = Create(context);
+         for (int i = 0; i < 9; i++)
+         {
+             for (int j = 0; j <9; j++)
+                 if (Cells[i][j] != 0)
+                 {
+                     var idxi = i;
+                     var idxj = j;
+                     var cellValue = Cells[i][j];
+                     toReturn = toReturn.Where(sudoku => sudoku.Cells[idxi][idxj] == cellValue);
+                 }
+            {
+               
+               
+            }
+         }
+         return toReturn;
 
-        /// <summary>
+      }
+
+
+      /// <summary>
+      /// Creates a Z3-capable theorem to solve a Sudoku
+      /// </summary>
+      /// <param name="context">The wrapping Z3 context used to interpret c# Lambda into Z3 constraints</param>
+      /// <returns>A typed theorem to be further filtered with additional contraints</returns>
+      public static Theorem<SudokuGrid> Create(Z3Context context)
+      {
+
+         var sudokuTheorem = context.NewTheorem<SudokuGrid>();
+
+         // Cells have values between 1 and 9
+         for (int i = 0; i < 9; i++)
+         {
+            for (int j = 0; j < 9; j++)
+            {
+               //To avoid side effects with lambdas, we copy indices to local variables
+               var i1 = i;
+               var j1 = j;
+               sudokuTheorem = sudokuTheorem.Where(sudoku => sudoku.Cells[i1][j1] > 0 && sudoku.Cells[i1][j1] < 10);
+            }
+         }
+
+         // Rows must have distinct digits
+         for (int r = 0; r < 9; r++)
+         {
+             for (int j = 0; j < 9; j++)
+             {
+                 //Again we avoid Lambda closure side effects
+                 var r1 = r;
+                 var c1 = j;
+                 sudokuTheorem = sudokuTheorem.Where(t => Z3Methods.Distinct(_LineNeighbours[r1][c1]));
+             }
+         }
+
+         // Columns must have distinct digits
+         for (int r = 0; r < 9; r++)
+         {
+             for (int j = 0; j < 9; j++)
+             {
+                 //Again we avoid Lambda closure side effects
+                 var r1 = r;
+                 var c1 = j;
+                 sudokuTheorem = sudokuTheorem.Where(t => Z3Methods.Distinct(_ColumnNeighbours[r1][c1]));
+             }
+         }
+
+         // Boxes must have distinct digits
+         for (int r = 0; r < 9; r++)
+         {
+             for (int j = 0; j < 9; j++)
+             {
+                 //Again we avoid Lambda closure side effects
+                 var r1 = r;
+                 var c1 = j;
+                 sudokuTheorem = sudokuTheorem.Where(t => Z3Methods.Distinct(_BoxNeighbours[r1][c1]));
+             }
+         }
+         return sudokuTheorem;
+      }
+      
+      /// <summary>
         /// Displays a SudokuGrid in an easy-to-read format
         /// </summary>
         /// <returns></returns>

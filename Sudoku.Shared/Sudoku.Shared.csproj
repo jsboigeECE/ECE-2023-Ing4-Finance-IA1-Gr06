@@ -10,4 +10,16 @@
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="ExpressionUtils">
+      <HintPath>..\Sudoku.Z3Solvers\References\ExpressionUtils.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Z3">
+      <HintPath>..\Sudoku.Z3Solvers\References\Microsoft.Z3.dll</HintPath>
+    </Reference>
+    <Reference Include="Z3.LinqBinding">
+      <HintPath>..\Sudoku.Z3Solvers\References\Z3.LinqBinding.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
