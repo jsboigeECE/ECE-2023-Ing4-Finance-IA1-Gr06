@@ -113,14 +113,12 @@ namespace Sudoku.Z3Solvers
                     {
                         int cellRow = boxRowStart + i;
                         int cellColumn = boxColumnStart + j;
-                        box[i * 3 + j] = sudokuTheorem[cellRow][cellColumn];
+                        box[i * 3 + j] = sudokuTheorem.Where(t => t.Cells[cellRow][cellColumn]);
                     }
                 }
                 sudokuTheorem = sudokuTheorem.Where(sudoku => Z3Methods.Distinct(box));
             }
-
             return sudokuTheorem;
-            
         }
     }
 

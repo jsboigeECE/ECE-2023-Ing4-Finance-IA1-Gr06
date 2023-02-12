@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="326bcbb5-48ef-4f55-905e-6782f83c530c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Sudoku/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Sudoku/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sudoku.Shared/SudokuGrid.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Sudoku.Shared/SudokuGrid.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sudoku.Z3Solvers/SudokuTheorem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Sudoku.Z3Solvers/SudokuTheorem.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sudoku.Z3Solvers/Z3Solvers.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Sudoku.Z3Solvers/Z3Solvers.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,6 +36,7 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectId" id="2KAuecHcdN2sJUaX9BYol3bgYlz" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -104,13 +103,23 @@
       <workItem from="1676053759590" duration="2296000" />
       <workItem from="1676119861730" duration="103000" />
       <workItem from="1676137806299" duration="110000" />
-      <workItem from="1676203741238" duration="4148000" />
+      <workItem from="1676203741238" duration="4197000" />
+      <workItem from="1676239214904" duration="1800000" />
     </task>
+    <task id="LOCAL-00001" summary="Implementation de Z3LinqSolver + erreur à corriger">
+      <created>1676207986644</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1676207986644</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -125,5 +134,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="Implementation de Z3LinqSolver + erreur à corriger" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implementation de Z3LinqSolver + erreur à corriger" />
   </component>
 </project>
