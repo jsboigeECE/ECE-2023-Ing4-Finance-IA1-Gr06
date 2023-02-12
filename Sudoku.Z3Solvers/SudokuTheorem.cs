@@ -41,8 +41,8 @@ namespace Sudoku.Z3Solvers
             ParameterExpression tParam = Expression.Parameter(typeof(SudokuGrid), "t");
             MemberExpression cell = Expression.Property(tParam, cellProperty);
 
-            ConstantExpression one = Expression.Constant(1, typeof(int[]));
-            ConstantExpression nine = Expression.Constant(9, typeof(int[]));
+            ConstantExpression one = Expression.Constant(1, typeof(int));
+            ConstantExpression nine = Expression.Constant(9, typeof(int));
 
             BinaryExpression cellGreaterThanOrEqual1 = Expression.GreaterThanOrEqual(cell, one);
             BinaryExpression cellLessThanOrEqual9 = Expression.LessThanOrEqual(cell, nine);

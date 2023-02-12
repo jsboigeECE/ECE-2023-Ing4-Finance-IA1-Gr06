@@ -5,21 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="326bcbb5-48ef-4f55-905e-6782f83c530c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Sudoku.Z3Solvers/References/ExpressionUtils.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sudoku.Z3Solvers/References/Microsoft.Z3.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sudoku.Z3Solvers/References/Z3.LinqBinding.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sudoku.Z3Solvers/SudokuTheorem.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Sudoku/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Sudoku/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sudoku.Benchmark/Sudoku.Benchmark.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Sudoku.Benchmark/Sudoku.Benchmark.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sudoku.Shared/Sudoku.Shared.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Sudoku.Shared/Sudoku.Shared.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sudoku.Shared/SudokuGrid.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Sudoku.Shared/SudokuGrid.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sudoku.Z3Linq/References/ExpressionUtils.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Sudoku.Shared/References/ExpressionUtils.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sudoku.Z3Linq/References/Microsoft.Z3.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Sudoku.Shared/References/Microsoft.Z3.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sudoku.Z3Linq/References/Z3.LinqBinding.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Sudoku.Shared/References/Z3.LinqBinding.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sudoku.Z3Linq/Z3LinqSolver.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sudoku.Z3Solvers/Sudoku.Z3Solvers.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Sudoku.Z3Solvers/Sudoku.Z3Solvers.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sudoku.Z3Solvers/SudokuTheorem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Sudoku.Z3Solvers/SudokuTheorem.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sudoku.Z3Solvers/Z3Solvers.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Sudoku.Z3Solvers/Z3Solvers.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sudoku.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Sudoku.sln" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,17 +17,22 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/61d0233bf4504bcfbf7112227c749d938200/23/29961e33/Z3Methods.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/61d0233bf4504bcfbf7112227c749d938200/53/13a7889e/Z3Context.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/61d0233bf4504bcfbf7112227c749d938200/c4/963a1174/Theorem.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/61d0233bf4504bcfbf7112227c749d938200/c4/a2cd22fd/Theorem`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8788e3f2aea849f1a384f7ae0a4ac68435778/e8/dcb1bc34/Context.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/b4f840b1338e4c55a76dddc9286269c336b90/08/119366f5/IntNum.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/b4f840b1338e4c55a76dddc9286269c336b90/52/2fc6fa92/Model.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/b4f840b1338e4c55a76dddc9286269c336b90/6d/31bf5885/Context.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/b4f840b1338e4c55a76dddc9286269c336b90/b9/66962923/Expr.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/197852119cb5d81aae9df72c4565dd7540f2f483a16f97b174a246b0125392b7/SelectMany.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3084d11350b2488ca852a8736f33547cb1c880/_bb40f/IDisposable.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/35e7e538796eca19115e7f3c2f459e1951ae177d47eb48ebbf393bff3ac/Select.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/66c3c1fbae4df879cbff3a39a35a496b3931c215419c69ebe663317bbe2e/CultureInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8b59fa60d15ea79167bca4aee77af3ed6b93648c61b472b7a8381c62977ddfdb/Type.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8e2eb0eba0627f6bc28f40c6d39804de9ffaecfeedaec9b28a10631066cd36/BinaryExpression.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d3b35aba78af8938342254c9ab4da7b7362a691ccc71b3decaabd322fea44/Int32.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e72723ae89bfa14a11bd326a2b2c8ae9ba8669da225cb5b2cb1d81a695ff3c/LambdaExpression.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f5a2ccf8d64e7aa05089a63a768244d9f2dc55854b3a5ab1b61126bdc8f7ebe2/ToCollection.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -55,7 +49,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.C#&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;RiderIisExpressOptionsPageId&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -103,6 +97,14 @@
       <workItem from="1675776529453" duration="3982000" />
       <workItem from="1675800982043" duration="2223000" />
       <workItem from="1675889950823" duration="834000" />
+      <workItem from="1675953866537" duration="2724000" />
+      <workItem from="1676027592933" duration="4848000" />
+      <workItem from="1676035579437" duration="141000" />
+      <workItem from="1676046339563" duration="2524000" />
+      <workItem from="1676053759590" duration="2296000" />
+      <workItem from="1676119861730" duration="103000" />
+      <workItem from="1676137806299" duration="110000" />
+      <workItem from="1676203741238" duration="4148000" />
     </task>
     <servers />
   </component>

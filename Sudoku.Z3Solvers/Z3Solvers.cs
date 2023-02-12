@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Z3;
 using Sudoku.Shared;
 using Z3.LinqBinding;
@@ -45,6 +46,81 @@ namespace Sudoku.Z3Solvers
         public override Shared.SudokuGrid Solve(Shared.SudokuGrid s)
         {
             return SolveZ3Linq(s);
+        }
+
+        public static Theorem<SudokuGrid> CreateTheorem(Z3Context context, Shared.SudokuGrid s)
+        {
+            var toReturn = Create(context);
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    if (s.Cells[i][j] != 0)
+                    {
+                        var idx = i;
+                        var idxj = j;
+                        var cellValue = s.Cells[i][j];
+                        toReturn = toReturn.Where(sudoku => sudoku.Cells[idx][idxj] == cellValue);
+                    }
+                }
+            }
+
+            return toReturn;
+        }
+
+
+        public static Theorem<SudokuGrid> Create(Z3Context context)
+        {
+            var sudokuTheorem = context.NewTheorem<SudokuGrid>();
+            // Cells have values between 1 and 9
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    // To avoid closure side effects with lambdas, we copy indices to local variables
+                    var i1 = i;
+                    var j1 = j;
+                    sudokuTheorem = sudokuTheorem.Where(sudoku => sudoku.Cells[i1][j1] >= 1 && sudoku.Cells[i1][j1] <= 9);
+                }
+            }
+
+            // Rows must have distinct digits
+            for (int r = 0; r < 9; r++)
+            {
+                // Again we avoid Lambda closure side effects
+                var r1 = r;
+                sudokuTheorem = sudokuTheorem.Where(t =>
+                    Z3Methods.Distinct(t.Cells[r1].Select((cell, j) => t.Cells[r1][j]).ToArray()));
+            }
+
+            // Columns must have distinct digits
+            for (int c = 0; c < 9; c++)
+            {
+                // Again we avoid Lambda closure side effects
+                var c1 = c;
+                sudokuTheorem = sudokuTheorem.Where(t => Z3Methods.Distinct(t.Cells.Select((row, i) => t.Cells[i][c1]).ToArray()));
+            }
+
+            // Boxes must have distinct digits
+            for (int b = 0; b < 9; b++)
+            {
+                int boxRowStart = (b / 3) * 3;
+                int boxColumnStart = (b % 3) * 3;
+                int[] box = new int[9];
+                for (int i = 0; i < 3; i++)
+                {
+                    for (int j = 0; j < 3; j++)
+                    {
+                        int cellRow = boxRowStart + i;
+                        int cellColumn = boxColumnStart + j;
+                        box[i * 3 + j] = sudokuTheorem[cellRow][cellColumn];
+                    }
+                }
+                sudokuTheorem = sudokuTheorem.Where(sudoku => Z3Methods.Distinct(box));
+            }
+
+            return sudokuTheorem;
+            
         }
     }
 
@@ -305,7 +381,7 @@ namespace Sudoku.Z3Solvers
 
             return instance;
         }
-        
+
         protected virtual Solver GetSolver()
         {
             return z3Context.MkSolver();
@@ -349,28 +425,17 @@ namespace Sudoku.Z3Solvers
                 return instance;
             }
         }
-        
+
         protected Shared.SudokuGrid SolveZ3Linq(Shared.SudokuGrid instance)
         {
-            BoolExpr instance_c = GetPuzzleConstraint(instance);
-            var z3Solver = GetReusableSolver();
-            z3Solver.Assert(GenericContraints);
-            z3Solver.Assert(instance_c);
-            if (z3Solver.Check() == Status.SATISFIABLE)
+            
             {
                 using (var ctx = new Z3Context())
                 {
-                    var theorem = SudokuGrid
-                        .ReadSudoku(instance.ToString())
-                        .CreateTheorem(ctx);
+                    var theorem = Z3LinqSolver.CreateTheorem(ctx, instance);
                     instance = theorem.Solve();
                 }
             }
-            else
-            {
-                Console.WriteLine("Failed to solve sudoku");
-            }
-            
             return instance;
         }
     }
