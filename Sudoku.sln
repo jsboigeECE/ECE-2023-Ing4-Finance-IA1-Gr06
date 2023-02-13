@@ -20,7 +20,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sudoku.Backtracking", "Sudo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sudoku.DancingLinks", "Sudoku.DancingLinks\Sudoku.DancingLinks.csproj", "{B5CA730B-F12D-47E4-9AC5-DB6EFDC749BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sudoku.DemoPython", "Sudoku.DemoPython\Sudoku.DemoPython.csproj", "{326F1B90-A810-4133-B1BA-5A41729CF875}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sudoku.DemoPython", "Sudoku.DemoPython\Sudoku.DemoPython.csproj", "{326F1B90-A810-4133-B1BA-5A41729CF875}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sudoku.RecuitSimule", "Sudoku.RecuitSimule\Sudoku.RecuitSimule.csproj", "{5E5BB862-191F-4573-8503-C9067235A2E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,6 +54,10 @@ Global
 		{326F1B90-A810-4133-B1BA-5A41729CF875}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{326F1B90-A810-4133-B1BA-5A41729CF875}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{326F1B90-A810-4133-B1BA-5A41729CF875}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E5BB862-191F-4573-8503-C9067235A2E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E5BB862-191F-4573-8503-C9067235A2E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E5BB862-191F-4573-8503-C9067235A2E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E5BB862-191F-4573-8503-C9067235A2E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
