@@ -98,9 +98,6 @@ namespace Sudoku.Z3Linq
             }
             return sudokuTheorem;
         }
-        
-        
-    
     }
 }
 
