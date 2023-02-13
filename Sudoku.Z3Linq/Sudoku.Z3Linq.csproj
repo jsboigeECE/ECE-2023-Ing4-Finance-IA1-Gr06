@@ -8,18 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Sudoku.Shared\Sudoku.Shared.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="ExpressionUtils">
-        <HintPath>References\ExpressionUtils.dll</HintPath>
-      </Reference>
-      <Reference Include="Microsoft.Z3">
-        <HintPath>References\Microsoft.Z3.dll</HintPath>
-      </Reference>
-      <Reference Include="Z3.LinqBinding">
-        <HintPath>References\Z3.LinqBinding.dll</HintPath>
-      </Reference>
+      <ProjectReference Include="..\Z3.LinqBinding\Z3.LinqBinding.csproj" />
     </ItemGroup>
 
 </Project>
