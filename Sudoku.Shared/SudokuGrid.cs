@@ -6,13 +6,12 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Loader;
 using System.Text;
+using Z3.LinqBinding;
 
 namespace Sudoku.Shared
 {
     public class SudokuGrid : ICloneable
     {
-
-       
         /// <summary>
         /// The list of row indexes is used many times and thus stored for quicker access.
         /// </summary>
@@ -21,7 +20,7 @@ namespace Sudoku.Shared
 
         private static readonly (int row, int column)[][] _LineNeighbours =
             NeighbourIndices.Select(r => NeighbourIndices.Select(c => (r, c)).ToArray()).ToArray();
-            
+
 
         private static readonly (int row, int column)[][] _ColumnNeighbours =
             NeighbourIndices.Select(c => NeighbourIndices.Select(r => (r, c)).ToArray()).ToArray();
@@ -43,7 +42,7 @@ namespace Sudoku.Shared
                 {
                     for (int c = 0; c < 3; c++)
                     {
-                        currentBox.Add((startIndex.row+r, startIndex.column+c));
+                        currentBox.Add((startIndex.row + r, startIndex.column + c));
                     }
                 }
 
@@ -65,7 +64,7 @@ namespace Sudoku.Shared
                 foreach (var columnIndex in NeighbourIndices)
                 {
                     var cellVoisinage = new List<(int row, int column)>();
-                    
+
                     foreach (var voisinage in AllNeighbours)
                     {
                         if (voisinage.Contains((rowIndex, columnIndex)))
@@ -73,31 +72,59 @@ namespace Sudoku.Shared
                             foreach (var voisin in voisinage)
                             {
                                 //We don't include the current cell
-                                if (!cellVoisinage.Contains(voisin) && voisin.row != rowIndex || voisin.column != columnIndex)
+                                if (!cellVoisinage.Contains(voisin) && voisin.row != rowIndex ||
+                                    voisin.column != columnIndex)
                                 {
                                     cellVoisinage.Add(voisin);
                                 }
                             }
                         }
                     }
+
                     CellNeighbours[rowIndex][columnIndex] = cellVoisinage.ToArray();
                 }
-                
             }
         }
 
-        
 
         public SudokuGrid()
         {
         }
 
-        
 
         // The List property makes it easier to manipulate cells,
         public int[][] Cells { get; set; } = NeighbourIndices.Select(r => new int[9]).ToArray();
 
 
+        /*public Theorem<SudokuGrid> CreateTheorem(Z3Context context)
+        {
+            var toReturn = Create(context);
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    if (Cells[i][j] != 0)
+                    {
+                        var idxi = i;
+                        var idxj = j;
+                        var cellValue = Cells[i][j];
+                        toReturn = toReturn.Where(sudoku => Cells[idxi][idxj] == cellValue);
+                    }
+                }
+            }
+
+            return toReturn;
+        }*/
+
+
+        /// <summary>
+        /// Creates a Z3-capable theorem to solve a Sudoku
+        /// </summary>
+        /// <param name="context">The wrapping Z3 context used to interpret c# Lambda into Z3 constraints</param>
+        /// <returns>A typed theorem to be further filtered with additional contraints</returns>
+        
+        
+        
 
         /// <summary>
         /// Displays a SudokuGrid in an easy-to-read format
@@ -117,7 +144,6 @@ namespace Sudoku.Shared
                 output.Append("| ");
                 for (int column = 1; column <= 9; column++)
                 {
-
                     var value = Cells[row - 1][column - 1];
 
                     output.Append(value);
@@ -152,8 +178,6 @@ namespace Sudoku.Shared
             return output.ToString();
         }
 
-       
-
 
         public int[] GetAvailableNumbers(int x, int y)
         {
@@ -173,7 +197,7 @@ namespace Sudoku.Shared
                 }
             }
 
-            
+
             List<int> res = new List<int>();
 
             for (int i = 0; i < 9; i++)
@@ -186,7 +210,6 @@ namespace Sudoku.Shared
 
             return res.ToArray();
         }
-
 
 
         /// <summary>
@@ -248,7 +271,6 @@ namespace Sudoku.Shared
 
                         // we empty the current row collector to start building a new row
                         rowCells.Clear();
-                        
                     }
 
                     // when 9 rows are collected, we create a Sudoku and start collecting rows again.
@@ -258,7 +280,6 @@ namespace Sudoku.Shared
                         // we empty the current cell collector to start building a new SudokuGrid
                         rows.Clear();
                     }
-
                 }
             }
 
@@ -283,11 +304,11 @@ namespace Sudoku.Shared
 
         public SudokuGrid CloneSudoku()
         {
-            return new SudokuGrid(){Cells = this.Cells.Select(r=>r.Select(val=>val).ToArray()).ToArray()};
+            return new SudokuGrid() { Cells = this.Cells.Select(r => r.Select(val => val).ToArray()).ToArray() };
         }
 
 
-        private static IDictionary<string,Lazy<ISudokuSolver>> _CachedSolvers;
+        private static IDictionary<string, Lazy<ISudokuSolver>> _CachedSolvers;
 
         public static IDictionary<string, Lazy<ISudokuSolver>> GetSolvers()
         {
@@ -305,18 +326,19 @@ namespace Sudoku.Shared
                             var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(file);
                             foreach (var type in assembly.GetTypes())
                             {
-                                if (typeof(ISudokuSolver).IsAssignableFrom(type) && !(type.IsAbstract) && !(typeof(ISudokuSolver) == type))
+                                if (typeof(ISudokuSolver).IsAssignableFrom(type) && !(type.IsAbstract) &&
+                                    !(typeof(ISudokuSolver) == type))
                                 {
                                     try
                                     {
-                                        var solver = new Lazy<ISudokuSolver>(()=>(ISudokuSolver)Activator.CreateInstance(type));
+                                        var solver = new Lazy<ISudokuSolver>(() =>
+                                            (ISudokuSolver)Activator.CreateInstance(type));
                                         solvers.Add(type.Name, solver);
                                     }
                                     catch (Exception e)
                                     {
                                         Console.WriteLine(e);
                                     }
-
                                 }
                             }
                         }
@@ -324,9 +346,7 @@ namespace Sudoku.Shared
                         {
                             Console.WriteLine(e);
                         }
-
                     }
-
                 }
 
                 _CachedSolvers = solvers;
@@ -346,13 +366,14 @@ namespace Sudoku.Shared
             {
                 foreach (var colIndex in NeighbourIndices)
                 {
-                    if (originalPuzzle.Cells[rowIndex][colIndex]>0 && originalPuzzle.Cells[rowIndex][colIndex] != Cells[rowIndex][colIndex])
+                    if (originalPuzzle.Cells[rowIndex][colIndex] > 0 &&
+                        originalPuzzle.Cells[rowIndex][colIndex] != Cells[rowIndex][colIndex])
                     {
                         toReturn += 1;
                     }
                 }
             }
-            
+
             return toReturn;
         }
 
@@ -360,6 +381,5 @@ namespace Sudoku.Shared
         {
             return NbErrors(originalPuzzle) == 0;
         }
-
     }
 }
