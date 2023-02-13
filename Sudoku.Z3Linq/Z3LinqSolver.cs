@@ -2,20 +2,17 @@
 using Z3.LinqBinding;
 using Microsoft.Z3;
 
-namespace Sudoku.
-    Z3Linq
+namespace Sudoku.Z3Linq
 {
     public class Z3LinqSolver : ISudokuSolver
     {
-       
-            
         public SudokuGrid Solve(SudokuGrid s)
         {
             Console.WriteLine("Le solver Z3-Linq a bien été appelé !");
             {
                 using (var ctx = new Z3Context())
                 {
-                    var theorem = Z3LinqSolver.CreateTheorem(ctx, s);
+                    var theorem = CreateTheorem(ctx, s);
                     s = theorem.Solve();
                 }
             }

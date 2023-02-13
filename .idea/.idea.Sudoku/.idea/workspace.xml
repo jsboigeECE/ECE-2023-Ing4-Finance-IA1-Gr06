@@ -5,32 +5,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="326bcbb5-48ef-4f55-905e-6782f83c530c" name="Changes" comment="Ajout solveur Z3 Linq (avec sa classe) et lien avec le main">
+      <change afterPath="$PROJECT_DIR$/Sudoku.Z3Linq/References/ExpressionUtils.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Sudoku.Z3Linq/References/Microsoft.Z3.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Sudoku.Z3Linq/References/Z3.LinqBinding.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Sudoku/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Sudoku/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sudoku.Z3Linq/Z3LinqSolver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Sudoku.Z3Linq/Z3LinqSolver.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sudoku.Z3Solvers/Z3Solvers.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Sudoku.Z3Solvers/Z3Solvers.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sudoku.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Sudoku.sln" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Rebase.Settings">
+    <option name="NEW_BASE" value="origin/main" />
+  </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3084d11350b2488ca852a8736f33547cb1c880/9b/d9544905/Environment.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/bnhso/RiderProjects/ECE-2023-Ing4-Finance-IA1-Gr06/Sudoku.Z3Linq/Z3LinqSolver.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/bnhso/RiderProjects/ECE-2023-Ing4-Finance-IA1-Gr06/Sudoku.Z3Linq/Z3LinqSolver.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/bnhso/RiderProjects/ECE-2023-Ing4-Finance-IA1-Gr06/Sudoku.Z3Linq/Z3LinqSolver.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/bnhso/RiderProjects/ECE-2023-Ing4-Finance-IA1-Gr06/Sudoku.Z3Linq/Z3LinqSolver.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/bnhso/RiderProjects/ECE-2023-Ing4-Finance-IA1-Gr06/Sudoku.Z3Linq/Z3LinqSolver.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/bnhso/RiderProjects/ECE-2023-Ing4-Finance-IA1-Gr06/Sudoku.Z3Linq/Z3LinqSolver.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Sudoku.Z3Linq/Z3LinqSolver.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/bnhso/RiderProjects/ECE-2023-Ing4-Finance-IA1-Gr06/Sudoku.Z3Linq/Z3LinqSolver.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/bnhso/RiderProjects/ECE-2023-Ing4-Finance-IA1-Gr06/Sudoku.Z3Linq/Z3LinqSolver.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/bnhso/RiderProjects/ECE-2023-Ing4-Finance-IA1-Gr06/Sudoku.Z3Linq/Z3LinqSolver.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/bnhso/RiderProjects/ECE-2023-Ing4-Finance-IA1-Gr06/Sudoku.Z3Linq/Z3LinqSolver.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Sudoku.Z3Linq/Z3LinqSolver.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectId" id="2KAuecHcdN2sJUaX9BYol3bgYlz" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -47,9 +46,9 @@
   },
   "keyToStringList": {
     "rider.external.source.directories": [
-      "C:\\Users\\bnhso\\AppData\\Roaming\\JetBrains\\Rider2022.3\\resharper-host\\DecompilerCache",
-      "C:\\Users\\bnhso\\AppData\\Roaming\\JetBrains\\Rider2022.3\\resharper-host\\SourcesCache",
-      "C:\\Users\\bnhso\\AppData\\Local\\Symbols\\src"
+      "C:\\Users\\nicoc\\AppData\\Roaming\\JetBrains\\Rider2022.3\\resharper-host\\DecompilerCache",
+      "C:\\Users\\nicoc\\AppData\\Roaming\\JetBrains\\Rider2022.3\\resharper-host\\SourcesCache",
+      "C:\\Users\\nicoc\\AppData\\Local\\Symbols\\src"
     ]
   }
 }]]></component>
@@ -84,6 +83,7 @@
       <workItem from="1673429814715" duration="5703000" />
       <workItem from="1675786377372" duration="7101000" />
       <workItem from="1676277313936" duration="3603000" />
+      <workItem from="1676281333076" duration="2358000" />
     </task>
     <task id="LOCAL-00001" summary="First Push">
       <created>1673435418543</created>
