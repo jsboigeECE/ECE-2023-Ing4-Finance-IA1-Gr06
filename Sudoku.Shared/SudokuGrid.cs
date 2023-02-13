@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Loader;
 using System.Text;
-using Z3.LinqBinding;
 
 namespace Sudoku.Shared
 {
@@ -96,35 +95,7 @@ namespace Sudoku.Shared
         public int[][] Cells { get; set; } = NeighbourIndices.Select(r => new int[9]).ToArray();
 
 
-        /*public Theorem<SudokuGrid> CreateTheorem(Z3Context context)
-        {
-            var toReturn = Create(context);
-            for (int i = 0; i < 9; i++)
-            {
-                for (int j = 0; j < 9; j++)
-                {
-                    if (Cells[i][j] != 0)
-                    {
-                        var idxi = i;
-                        var idxj = j;
-                        var cellValue = Cells[i][j];
-                        toReturn = toReturn.Where(sudoku => Cells[idxi][idxj] == cellValue);
-                    }
-                }
-            }
-
-            return toReturn;
-        }*/
-
-
-        /// <summary>
-        /// Creates a Z3-capable theorem to solve a Sudoku
-        /// </summary>
-        /// <param name="context">The wrapping Z3 context used to interpret c# Lambda into Z3 constraints</param>
-        /// <returns>A typed theorem to be further filtered with additional contraints</returns>
-        
-        
-        
+      
 
         /// <summary>
         /// Displays a SudokuGrid in an easy-to-read format
