@@ -2,7 +2,8 @@
 using Z3.LinqBinding;
 using Microsoft.Z3;
 
-namespace Sudoku.Z3Linq
+namespace Sudoku.
+    Z3Linq
 {
     public class Z3LinqSolver : ISudokuSolver
     {
