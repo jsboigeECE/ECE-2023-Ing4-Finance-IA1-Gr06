@@ -10,10 +10,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Sudoku.Backtracking\Sudoku.Backtracking.csproj" />
     <ProjectReference Include="..\Sudoku.DancingLinks\Sudoku.DancingLinks.csproj" />
     <ProjectReference Include="..\Sudoku.Shared\Sudoku.Shared.csproj" />
     <ProjectReference Include="..\Sudoku.Z3Solvers\Sudoku.Z3Solvers.csproj" />
+    <ProjectReference Include="..\Sudoku.GraphColoring\Sudoku.GraphColoring.csproj" />
+    <ProjectReference Include="..\Sudoku.GraphColoringv2\Sudoku.GraphColoringv2.csproj" />
   </ItemGroup>
 
 </Project>
