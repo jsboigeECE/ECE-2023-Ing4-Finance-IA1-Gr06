@@ -589,129 +589,8 @@ namespace Z3.LinqBinding
                     case TypeCode.Object:
                         if (parameterType.IsArray || (parameterType.IsGenericType && typeof(ICollection).IsAssignableFrom(parameterType.GetGenericTypeDefinition())))
                         {
-                            Type eltType;
-                            if (parameterType.IsArray)
-                            {
-                                eltType = parameterType.GetElementType();
-                            }
-                            else
-                            {
-                                eltType = parameterType.GetGenericArguments()[0];
-                            }
-                            if (eltType == null)
-                            {
-                                throw new NotSupportedException("Unsupported untyped array parameter type for " + parameter.Name + ".");
-                            }
-
-                            var results = new ArrayList();
-
-                            var arrVal = subEnv.Expr as ArrayExpr;
-                            var multiEnv = subEnv as MultipleEnvironment;
-
-                            //todo: deal with keys and length in a more robust way
-                            var keyType = typeof(int);
-                            
-                            var existingMember = parameter.GetValue(destinationObject, null);
-                            ArrayList existingCollection = null;
-                            int length = 0;
-                            if (existingMember != null)
-                            {
-                                existingCollection = new ArrayList((ICollection)existingMember);
-                                length = existingCollection.Count;
-                            }
-
-                            if (multiEnv != null && multiEnv.SubEnvironments.Keys.Count>0)
-                            {
-                                var maxBound = multiEnv.SubEnvironments.Keys.Max();
-                                keyType = maxBound.GetType();
-                                int intMaxBound = Convert.ToInt32(maxBound);
-                                length = Math.Max(length, intMaxBound + 1);
-                            }
-                            for (int i = 0; i < length; i++)
-                            {
-                                Expr numValExpr = null;
-                                Environment subSubEnv = null;
-                                if (arrVal != null)
-                                {
-                                    // we deal with an array
-                                    numValExpr = model.Eval(context.MkSelect(arrVal, context.MkInt(i)));
-                                }
-                                else
-                                {
-                                    // we deal with a constant based collection
-                                    object key = i;
-                                    if (key.GetType() != keyType)
-                                    {
-                                        key = TypeDescriptor.GetConverter(keyType).ConvertFrom(key);
-                                    }
-                                    if (multiEnv.SubEnvironments.TryGetValue(key, out subSubEnv))
-                                    {
-                                        if (subSubEnv.Expr != null)
-                                        {
-                                            numValExpr = model.Eval(subSubEnv.Expr);
-                                        }
-                                    }
-                                }
-
-
-                                object numVal = null;
-
-                                if (existingCollection != null && existingCollection.Count > i)
-                                {
-                                    numVal = existingCollection[i];
-                                }
-
-
-                                if ((subSubEnv!=null && Type.GetTypeCode(eltType) == TypeCode.Object)
-									||(numValExpr != null && numValExpr.ASTKind != Z3_ast_kind.Z3_APP_AST))
-                                {
-                                    switch (Type.GetTypeCode(eltType))
-                                    {
-                                        case TypeCode.String:
-                                            numVal = numValExpr.String;
-                                            break;
-                                        case TypeCode.Int16:
-                                        case TypeCode.Int32:
-                                            numVal = ((IntNum)numValExpr).Int;
-                                            break;
-                                        case TypeCode.Int64:
-                                            numVal = ((IntNum)numValExpr).Int64;
-                                            break;
-                                        case TypeCode.DateTime:
-                                            numVal = DateTime.FromFileTime(((IntNum)numValExpr).Int64);
-                                            break;
-                                        case TypeCode.Boolean:
-                                            numVal = numValExpr.IsTrue;
-                                            break;
-                                        case TypeCode.Single:
-                                            numVal = Double.Parse(((RatNum)numValExpr).ToDecimalString(32),
-                                                CultureInfo.InvariantCulture);
-                                            break;
-                                        case TypeCode.Decimal:
-                                            numVal = Decimal.Parse(((RatNum)numValExpr).ToDecimalString(128),
-                                                CultureInfo.InvariantCulture);
-                                            break;
-                                        case TypeCode.Double:
-                                            numVal = Double.Parse(((RatNum)numValExpr).ToDecimalString(64),
-                                                CultureInfo.InvariantCulture);
-                                            break;
-                                        case TypeCode.Object:
-                                            if (subSubEnv != null)
-                                            {
-                                                numVal = GetSolution(eltType, context, model, subSubEnv);
-                                            }
-                                            break;
-                                        default:
-                                            throw new NotSupportedException(
-                                                $"Unsupported array parameter type for {parameter.Name} and array element type {eltType.Name}.");
-                                    }
-
-                                }
-
-                                results.Add(numVal);
-                            }
-
-                            value = parameterType.IsArray ? results.ToArray(eltType) : Activator.CreateInstance(parameterType, results.ToArray(eltType));
+	                        var existingMember = parameter.GetValue(destinationObject, null);
+							value = ExtractCollection(existingMember, context, model, subEnv, parameter, parameterType);
                         }
                         else
                         {
@@ -740,6 +619,149 @@ namespace Z3.LinqBinding
 
 
             return value;
+        }
+
+        private object ExtractCollection(object existingMember, Context context, Model model, Environment subEnv,
+	        PropertyInfo parameter, Type parameterType)
+        {
+	        object value;
+	        Type eltType;
+	        if (parameterType.IsArray)
+	        {
+		        eltType = parameterType.GetElementType();
+	        }
+	        else
+	        {
+		        eltType = parameterType.GetGenericArguments()[0];
+	        }
+
+	        if (eltType == null)
+	        {
+		        throw new NotSupportedException("Unsupported untyped array parameter type for " + parameter.Name + ".");
+	        }
+
+	        var results = new ArrayList();
+
+	        var arrVal = subEnv.Expr as ArrayExpr;
+	        var multiEnv = subEnv as MultipleEnvironment;
+
+	        //todo: deal with keys and length in a more robust way
+	        var keyType = typeof(int);
+
+	        
+	        ArrayList existingCollection = null;
+	        int length = 0;
+	        if (existingMember != null)
+	        {
+		        existingCollection = new ArrayList((ICollection)existingMember);
+		        length = existingCollection.Count;
+	        }
+
+	        if (multiEnv != null && multiEnv.SubEnvironments.Keys.Count > 0)
+	        {
+		        var maxBound = multiEnv.SubEnvironments.Keys.Max();
+		        keyType = maxBound.GetType();
+		        int intMaxBound = Convert.ToInt32(maxBound);
+		        length = Math.Max(length, intMaxBound + 1);
+	        }
+
+	        for (int i = 0; i < length; i++)
+	        {
+		        Expr numValExpr = null;
+		        Environment subSubEnv = null;
+		        if (arrVal != null)
+		        {
+			        // we deal with an array
+			        numValExpr = model.Eval(context.MkSelect(arrVal, context.MkInt(i)));
+		        }
+		        else
+		        {
+			        // we deal with a constant based collection
+			        object key = i;
+			        if (key.GetType() != keyType)
+			        {
+				        key = TypeDescriptor.GetConverter(keyType).ConvertFrom(key);
+			        }
+
+			        if (multiEnv.SubEnvironments.TryGetValue(key, out subSubEnv))
+			        {
+				        if (subSubEnv.Expr != null)
+				        {
+					        numValExpr = model.Eval(subSubEnv.Expr);
+				        }
+			        }
+		        }
+
+
+		        object numVal = null;
+
+		        if (existingCollection != null && existingCollection.Count > i)
+		        {
+			        numVal = existingCollection[i];
+		        }
+
+
+		        if ((subSubEnv != null && Type.GetTypeCode(eltType) == TypeCode.Object)
+		            || (numValExpr != null && numValExpr.ASTKind != Z3_ast_kind.Z3_APP_AST))
+		        {
+			        switch (Type.GetTypeCode(eltType))
+			        {
+				        case TypeCode.String:
+					        numVal = numValExpr.String;
+					        break;
+				        case TypeCode.Int16:
+				        case TypeCode.Int32:
+					        numVal = ((IntNum)numValExpr).Int;
+					        break;
+				        case TypeCode.Int64:
+					        numVal = ((IntNum)numValExpr).Int64;
+					        break;
+				        case TypeCode.DateTime:
+					        numVal = DateTime.FromFileTime(((IntNum)numValExpr).Int64);
+					        break;
+				        case TypeCode.Boolean:
+					        numVal = numValExpr.IsTrue;
+					        break;
+				        case TypeCode.Single:
+					        numVal = Double.Parse(((RatNum)numValExpr).ToDecimalString(32),
+						        CultureInfo.InvariantCulture);
+					        break;
+				        case TypeCode.Decimal:
+					        numVal = Decimal.Parse(((RatNum)numValExpr).ToDecimalString(128),
+						        CultureInfo.InvariantCulture);
+					        break;
+				        case TypeCode.Double:
+					        numVal = Double.Parse(((RatNum)numValExpr).ToDecimalString(64),
+						        CultureInfo.InvariantCulture);
+					        break;
+				        case TypeCode.Object:
+					        if (subSubEnv != null)
+					        {
+						        if (eltType.IsArray || (eltType.IsGenericType && typeof(ICollection).IsAssignableFrom(eltType.GetGenericTypeDefinition())))
+						        {
+									var existingSubMember = numVal;
+									numVal = ExtractCollection(existingSubMember, context, model, subSubEnv, parameter, eltType);
+						        }
+						        else
+						        {
+									numVal = GetSolution(eltType, context, model, subSubEnv);
+								}
+					        }
+
+					        break;
+				        default:
+					        throw new NotSupportedException(
+						        $"Unsupported array parameter type for {parameter.Name} and array element type {eltType.Name}.");
+			        }
+		        }
+
+		        results.Add(numVal);
+	        }
+
+	        value = parameterType.IsArray
+		        ? results.ToArray(eltType)
+		        : Activator.CreateInstance(parameterType, results.ToArray(eltType));
+	        return value;
         }
 
 

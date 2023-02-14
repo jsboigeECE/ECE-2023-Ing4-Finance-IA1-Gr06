@@ -6,9 +6,12 @@ namespace Sudoku.Z3Linq
 {
     public class Z3LinqSolver : ISudokuSolver
     {
-        public SudokuGrid Solve(SudokuGrid s)
+
+	    private static readonly int[] Indices = Enumerable.Range(0, 9).ToArray();
+
+		public SudokuGrid Solve(SudokuGrid s)
         {
-            Console.WriteLine("Le solver Z3-Linq a bien été appelé !");
+            //Console.WriteLine("Le solver Z3-Linq a bien été appelé !");
             {
                 using (var ctx = new Z3Context())
                 {
@@ -16,7 +19,7 @@ namespace Sudoku.Z3Linq
                     s = theorem.Solve();
                 }
             }
-            return s.CloneSudoku();
+            return s;
         }
         
           public static Theorem<SudokuGrid> CreateTheorem(Z3Context context, SudokuGrid s)
@@ -58,17 +61,20 @@ namespace Sudoku.Z3Linq
             {
                 // Again we avoid Lambda closure side effects
                 var r1 = r;
-                sudokuTheorem = sudokuTheorem.Where(t =>
-                    Z3Methods.Distinct(t.Cells[r1].Select((cell, j) => t.Cells[r1][j]).ToArray()));
-            }
+				//sudokuTheorem = sudokuTheorem.Where(t =>
+				//    Z3Methods.Distinct(t.Cells[r1].Select((cell, j) => t.Cells[r1][j]).ToArray()));
+				sudokuTheorem = sudokuTheorem.Where(t =>
+					Z3Methods.Distinct(Indices.Select(j => t.Cells[r1][j]).ToArray()));
+			}
 
             // Columns must have distinct digits
             for (int c = 0; c < 9; c++)
             {
                 // Again we avoid Lambda closure side effects
                 var c1 = c;
-                sudokuTheorem = sudokuTheorem.Where(t => Z3Methods.Distinct(t.Cells.Select((row, i) => t.Cells[i][c1]).ToArray()));
-            }
+				//sudokuTheorem = sudokuTheorem.Where(t => Z3Methods.Distinct(t.Cells.Select((row, i) => t.Cells[i][c1]).ToArray()));
+				sudokuTheorem = sudokuTheorem.Where(t => Z3Methods.Distinct(Indices.Select(i => t.Cells[i][c1]).ToArray()));
+			}
 
             // Boxes must have distinct digits
             for (int b = 0; b < 9; b++)
@@ -76,9 +82,9 @@ namespace Sudoku.Z3Linq
                 //On Ã©vite les effets de bords par closure
                 var b1 = b;
                 // We retrieve to top left cell for all boxes, using integer division and remainders.
-                var iStart = b1 / 3;
-                var jStart = b1 % 3;
-                var indexStart = iStart * 3 * 9 + jStart * 3;
+                var iStart = b1 / 3 * 3;
+                var jStart = b1 % 3 * 3;
+                //var indexStart = iStart * 3 * 9 + jStart * 3;
                 sudokuTheorem = sudokuTheorem.Where(t => Z3Methods.Distinct(new int[]
                         {
                             t.Cells[iStart][jStart],
