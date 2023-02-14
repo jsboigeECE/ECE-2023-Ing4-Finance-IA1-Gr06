@@ -28,6 +28,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sudoku.Z3Linq", "Sudoku.Z3L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Z3.LinqBinding", "Z3.LinqBinding\Z3.LinqBinding.csproj", "{5E7DD7ED-9AC0-4095-AB6B-A6BF21FE5B7F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sudoku.RecuitSimule", "Sudoku.RecuitSimule\Sudoku.RecuitSimule.csproj", "{5E5BB862-191F-4573-8503-C9067235A2E9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -138,6 +140,10 @@ Global
 		{5E7DD7ED-9AC0-4095-AB6B-A6BF21FE5B7F}.Release|x64.Build.0 = Release|x64
 		{5E7DD7ED-9AC0-4095-AB6B-A6BF21FE5B7F}.Release|x86.ActiveCfg = Release|x86
 		{5E7DD7ED-9AC0-4095-AB6B-A6BF21FE5B7F}.Release|x86.Build.0 = Release|x86
+		{5E5BB862-191F-4573-8503-C9067235A2E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E5BB862-191F-4573-8503-C9067235A2E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E5BB862-191F-4573-8503-C9067235A2E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E5BB862-191F-4573-8503-C9067235A2E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
