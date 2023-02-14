@@ -18,7 +18,6 @@
     <ProjectReference Include="..\Sudoku.Z3Linq\Sudoku.Z3Linq.csproj" />
     <ProjectReference Include="..\Sudoku.Z3Solvers\Sudoku.Z3Solvers.csproj" />
     <ProjectReference Include="..\Sudoku.Norvig\Sudoku.Norvig.csproj" />
-    <ProjectReference Include="..\Sudoku.DlxLib\Sudoku.DlxLib.csproj" />
   </ItemGroup>
 
 </Project>

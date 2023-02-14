@@ -7,10 +7,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="AlgorithmXMatrix.cs" />
+    <Compile Remove="ColumnObject.cs" />
+    <Compile Remove="DataObject.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="AlgorithmXMatrix.cs" />
+    <None Include="ColumnObject.cs" />
+    <None Include="DataObject.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DlxLib" Version="1.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Sudoku.Backtracking\Sudoku.Backtracking.csproj" />
     <ProjectReference Include="..\Sudoku.Shared\Sudoku.Shared.csproj" />
     <ProjectReference Include="..\Sudoku.Z3Solvers\Sudoku.Z3Solvers.csproj" />
-    <ProjectReference Include="..\Sudoku.DlxLib\Sudoku.DlxLib.csproj" />
   </ItemGroup>
 
 </Project>
