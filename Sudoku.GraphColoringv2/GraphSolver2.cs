@@ -12,7 +12,6 @@ public class GraphSolver2 : ISudokuSolver
         try
         {
             GrapheColoring graphe = new GrapheColoring(s);
-            GrapheColoring graphe2 = new GrapheColoring(s);
 
             // Coloration algorithme WelshPowell
             Console.WriteLine("ALGORITHME WelshPowell");
