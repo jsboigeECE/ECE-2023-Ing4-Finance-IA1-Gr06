@@ -9,16 +9,31 @@ public class GraphSolver2 : ISudokuSolver
     public SudokuGrid Solve(SudokuGrid s)
     {
 
-        //On récupere le sudoku 
-        var grid = s.CloneSudoku();
-        //On crée un nouveau graph 'GraphColor' à partir du sudoku 
-        var graph = new GraphColor(grid);
-        var grid_f = graph.Convert();
+        try
+        {
+            GrapheColoring graphe = new GrapheColoring(s);
+            GrapheColoring graphe2 = new GrapheColoring(s);
+
+            // Coloration algorithme WelshPowell
+            Console.WriteLine("ALGORITHME WelshPowell");
+            graphe.WelshPowell();
+            Console.WriteLine("Affichage du resultat");
+            graphe.AfficherGrille();
+            Console.WriteLine();
+            Console.WriteLine("Verification du resultat");
+            return graphe.getGrid();
+
+          
+
+        }
+        catch (Exception e)
+        {
+            Console.Write("Attention ", e);
+        }
+        return s;
 
 
 
-
-        return grid_f;
 
 
 

@@ -1,217 +1,260 @@
-﻿using Sudoku.Shared;
-using System;
-
-/*On crée un graph dont les sommets sont les cases du sudoku (1 sommet pour chaque case du sudoku) 
-indépendemment de ce qu'il y'a dans le sudoku à résoudre. 
-On a donc autant de sommet que de case dans le sudoku.
-
-Objectif 1 : Mettre une arrête entre le sommet x et le sommet y si les 2 sommets sont contraintes d'avoir des valeurs différentes
-(si elles sont sur la même ligne, colonne ou carré).
-*/
-namespace Sudoku.GraphColoringv2;
-//On crée une classe sommet qui représente une case du sudoku
-public class Sommet
+﻿using System;
+using System.Net.Sockets;
+using Sudoku.Shared;
+namespace Sudoku.GraphColoringv2
 {
-    public int x { get; set; }
-    public int y { get; set; }
-    public int valeur { get; set; }
-    public int couleur { get; set; }
-    public Sommet(int x, int y, int valeur)
+    /* La classe "GraphColoring" permet de : 
+     * Convertir notre Sudoku en Graphe
+     * Appliquer un algorithme de coloration de graphe pour résoudre le sudoku
+     *
+     */
+    public class GrapheColoring
     {
-        this.x = x;
-        this.y = y;
-        this.valeur = valeur;
-        this.couleur = 0;
-    }
-}
+        //---------------------------------------------------------------------------------//
+        /*
+         *                                  ATTRIBUTS
+         */
+        //---------------------------------------------------------------------------------//
 
-//On crée une classe graph qui représente le sudoku de 'SudokuGrid' et qui contient les sommets
-public class Graph
-{
-    public Sommet[] sommets { get; set; }
-    public int[,] aretes { get; set; }
-    public int nbSommets { get; set; }
-    public int nbAretes { get; set; }
+        List<Sommet> sommets; //Liste des sommets du graphe
+        SudokuGrid grid; //Construit à partir d'une grille de sudoku
+        public const int nb_cases = 81; // Avec 81 cases (9x9)
 
-    /* On instancie un nouveau graph à partir d'un sudoku de la classe 'SudokuGrid' qui est la classe qui représente le sudoku.
-    On crée autant de sommet que de case dans le sudoku.
-    On crée une arrête entre 2 sommets si les 2 sommets sont contraintes d'avoir des valeurs différentes
-    (si elles sont sur la même ligne, colonne ou carré).
-    */
-    public Graph(SudokuGrid sudoku)
-    {
-        this.nbSommets = 81;
-        this.nbAretes = 0;
-        this.sommets = new Sommet[nbSommets];
-        this.aretes = new int[nbSommets, nbSommets];
-        int cpt = 0;
-        for (int i = 0; i < 9; i++)
+        //---------------------------------------------------------------------------------//
+        /*
+         *                                  CONSTRUCTEURS
+         */
+        //---------------------------------------------------------------------------------//
+
+        public GrapheColoring()
         {
-            for (int j = 0; j < 9; j++)
+        }
+
+        //On ajoute l'ensemble des sommets dans le graphe
+
+
+        //Constructeur surchargé
+
+        public GrapheColoring(SudokuGrid grid) //Construction d'un Grpahe à partir d'une grille de sudoku
+        {
+            this.sommets = new List<Sommet>(); //Nouvelle liste vide
+
+            //CONSTRUCTION DU GRAPHE
+            this.grid = grid.CloneSudoku(); //On récupère la grille de sudoku de départ
+            
+            int ligne;
+            int colonne;
+
+            //On parcours le sudoku
+
+            /*
+             * On attribut au graphe chaque sommet (case du sudoku) en lui donnant:
+             * sa position (dans le sudoku)
+             * sa couleur (si 0 = pas de couleur)
+             */
+            for (int i = 0; i < nb_cases; i++) 
             {
-                this.sommets[cpt] = new Sommet(i, j, sudoku.Cells[i][j]);
-                cpt++;
+                ligne = (int)(i / 9); //Nb de ligne du sudoku
+                colonne = i % 9; //Nb de colonne du sudoku
+
+                //Le graphe possède des Sommet (position, couleur)
+
+                this.sommets.Add(new Sommet(i, this.grid.Cells[ligne][colonne]));
+            }
+
+            //On parcours tous les sommets de notre graphe
+            //Pour chaque sommet, on lui attribut sa liste de sommets adjacent
+            foreach (Sommet s in this.sommets)
+            {
+                s.AddSommetsAdjacents(this.sommets);
             }
         }
-        for (int i = 0; i < nbSommets; i++)
+
+        //---------------------------------------------------------------------------------//
+        /*
+         *                                  GETTERS
+         */
+        //---------------------------------------------------------------------------------//
+
+        public SudokuGrid getGrid() //Retourne le sudoku
         {
-            for (int j = 0; j < nbSommets; j++)
+            return this.grid;
+        }
+
+        //---------------------------------------------------------------------------------//
+        /*
+         *                                  MÉTHODES
+         */
+        //---------------------------------------------------------------------------------//
+
+        //Méthode qui affiche d'afficher le sudoku à tous moment
+        public void AfficherGrille()
+        {
+            Console.WriteLine("----------------------------------");
+            int i = 0;
+            foreach (Sommet s in this.sommets)
             {
-                if (i != j)
+                if (i % 3 == 0)
+                    Console.Write("| ");
+                Console.Write("{0,2:#0} ", s.getCouleur());
+                i++;
+                if (i % 9 == 0)
+                    Console.WriteLine("|");
+                if (i % 27 == 0)
+                    Console.WriteLine("----------------------------------");
+            }
+            Console.WriteLine();
+        }
+
+        /* Méthode qui renvoie :
+             - true si le graphe a pu être entièrement complété
+             - false sinon
+        */
+        bool attribuerCouleurGraphe(int numSommet, int nbCouleurs, int couleur)
+        {
+
+                                //Initialisation
+           
+            Sommet s_actuel = this.sommets.ElementAt(numSommet); //On récupère le sommet à traiter parmis les 81 sommets
+            int couleur_enregistre = 0;     //On initialise une variable qui sauvegarde la couleur
+
+                                //vérification initiale 
+                                 
+            if (s_actuel.getCouleur() != 0) //Si le sommet a une couleur
+            {
+                couleur_enregistre = s_actuel.getCouleur(); //On la garde
+            }
+            else //Si le sommet est vide
+            {
+                if (s_actuel.verifCouleurAdj(couleur)) //SI la couleur passé en paramètre n'est pas déja attribué à un voisin
                 {
-                    if (sommets[i].x == sommets[j].x || sommets[i].y == sommets[j].y || (sommets[i].x / 3 == sommets[j].x / 3 && sommets[i].y / 3 == sommets[j].y / 3))
+                    // La couleur n'est pas déjà utilisée par un voisin
+                    couleur_enregistre = 0; // On sauvegarde l'absence de couleur
+                    s_actuel.setCouleur(couleur); //  on affecte la couleur au Sommet
+                }
+            }
+
+                            //Vérification suivante
+
+            /* SI le sommet a maintenant une couleur 
+             * On met a jours les valeurs et on passe au sommet suivant pour effectuer la même manip
+             * 
+             * SINON
+             * Le Sommet garde sa même couleur initiale (une couleure ou 0) et returne False
+             */
+
+            if (s_actuel.getCouleur() != 0)  // On vérifie si le sommet a désormais une couleur
+            {
+                // MISE À JOUR
+                nbCouleurs++; //Une nouvelle couleur a été utilisée
+                numSommet++; //On passe au sommet suivante
+
+                //VERIF : SUDOKU COMPLET
+                if (numSommet == nb_cases) //Si on est arrivée au dernier sommet 
+                {
+                    return true; //On a fini
+
+                }
+
+                // VERIF : Si le nombre de couleurs est à 9 ==> on a une ligne complète
+                nbCouleurs = nbCouleurs % 9; //On remet le nb de couleur à 0
+
+
+                // Si le sommet suivante contient déjà une couleur
+                if (this.sommets.ElementAt(numSommet).getCouleur() != 0) // on lance l'algorithme sur cette couleur
+                {
+                    if (attribuerCouleurGraphe(numSommet, nbCouleurs, this.sommets.ElementAt(numSommet).getCouleur()))
                     {
-                        this.aretes[i, j] = 1;
-                        this.nbAretes++;
+                        return true;
+                    }
+                        
+                }
+                else //Sinon; On lance l'algorithme en testant l'ensemble des couleurs de 1 à 9 sur la case suivante
+                {
+                    
+                    for (int colour = 1; colour <= 9; colour++)
+                    {
+                        if (attribuerCouleurGraphe(numSommet, nbCouleurs, colour))
+                        {
+                            return true;
+                        }    
+                            
+                    }
+                }
+
+                                        //DERNIERE VERIF : SI toujours à "False"
+
+                
+               
+                s_actuel.setCouleur(couleur_enregistre); // On restaure la couleur initiale de la case (ou l'absence de couleur)
+            }
+            return (numSommet == nb_cases);
+        }
+
+        //ALOGORITHME DE COLORATION DE GRAPHE "NAÏF"
+
+        public void AlgoNaifOptimise()
+        {
+            
+     
+            if (this.sommets.First().getCouleur() != 0) //SI le 1er sommet contient déja une couleure 
+            {
+                attribuerCouleurGraphe(0, 0, this.sommets.First().getCouleur()); //On lance l'Algo sur cette couleure
+            }
+            else //SINON
+            {
+                // On lance l'algorithme en testant l'ensemble des couleurs de 1 à 9 sur le 1er Sommet
+                for (int colour = 1; colour <= 9; colour++) 
+                {
+                    if (attribuerCouleurGraphe(0, 0, colour))
+                    {
+                        break;
                     }
                 }
             }
-        }
-    }
-}
 
-/*
-On va maintenant utiliser ce graphe et le problème de coloration sur ce graphe pour résoudre un problème de sudoku.
-
-On crée une nouvelle classe pour résoudre notre sudoku grâce au graphe qu'on a créé, et qui va résoudre le sudoku
-grâce à l'algorithme de coloration de graphes (Welsh-Powell).
-Le principe ici, sachant qu'on a un sudoku 9x9, est d'arriver à avoir 9 couleurs différentes sur chaque ligne, colonne, et carré.
-*/
-
-/*On crée notre classe 'GraphColoring' qui va instancier un nouveau graph à partir d'un sudoku de la classe 'SudokuGrid'.
-On considère les que un 0 dans une case correspond à une case vide.
-On va ensuite initialiser les cases non vides du sudoku avec les couleurs correspondantes (par exemple, tous les '1' auront la couleurs 1, etc)
-*/
-
-
-public class GraphColor
-{
-    public Graph graph { get; set; }
-    public int[] couleurs { get; set; }
-    public int nbCouleurs { get; set; }
-
-
-
-
-
-
-    public GraphColor(SudokuGrid sudoku)
-    {
-        this.graph = new Graph(sudoku);
-        this.couleurs = new int[graph.nbSommets];
-        this.nbCouleurs = 0;
-
-
-        //On remplace les cases non vides du sudoku par les couleurs correspondantes, dans le sudoku
-
-
-        for (int i = 0; i < graph.nbSommets; i++)
-        {
-            //On colorie les cases non vides du sudoku avec les couleurs correspondantes
-            if (graph.sommets[i].valeur != 0)
+            // On a trouvé la solution. On met à jour la grille
+            for (int i = 0; i < this.sommets.Count; i++)
             {
-                graph.sommets[i].couleur = graph.sommets[i].valeur;
-                couleurs[i] = graph.sommets[i].valeur;
-                nbCouleurs++;
+                this.grid.Cells[(int)(i / 9)][i % 9] = this.sommets.ElementAt(i).getCouleur();
+
             }
         }
 
-
-        //On colorie les cases vides du sudoku avec les couleurs correspondantes
-
+        //ALGORITHME DE COLORATION DE GRAPHE "WELSH-POWELL"
 
 
-        for (int i = 0; i < graph.nbSommets; i++)
+        public void WelshPowell()
         {
+            //1)TRIE DES SOMMETS PAR ORDRE DÉCROISSANT DE DEGRÉS
+            List<Sommet> sommetsTries = this.sommets.OrderByDescending(s => s.getCouleur()).ToList();
 
-            if (graph.sommets[i].couleur == 0)
+     
+            if (sommetsTries.First().getCouleur() != 0) //SI le 1er sommet contient déja une couleure 
             {
-                int couleur = 1;
-                bool ok = false;
-                while (!ok)
+                attribuerCouleurGraphe(0, 0, this.sommets.First().getCouleur()); //On lance l'Algo sur cette couleure
+            }
+
+            else //SINON
+            {
+                // On lance l'algorithme en testant l'ensemble des couleurs de 1 à 9 sur le 1er Sommet
+                for (int colour = 1; colour <= 9; colour++)
                 {
-                    ok = true;
-                    for (int j = 0; j < graph.nbSommets; j++)
+                    if (attribuerCouleurGraphe(0, 0, colour))
                     {
-
-                        if (graph.aretes[i, j] == 1 && graph.sommets[j].couleur == couleur)
-                        {
-                            ok = false;
-                        }
-
-
-                        //Pour chaque sommet voisin, on vérie ses couleurs disponible
-                        //Si le voisin n'a qu'une seule couleure disponible, on lui attribue cette couleur
-                        //Et on élimine cette couleur des couleurs disponibles pour le sommet i
-
-                        if (graph.aretes[i, j] == 1 && graph.sommets[j].couleur == 0)
-                        {
-                            int nbCouleursDispo = 0;
-                            int couleurDispo = 0;
-                            for (int k = 0; k < graph.nbSommets; k++)
-                            {
-                                if (graph.aretes[i, k] == 1 && graph.sommets[k].couleur == 0)
-                                {
-                                    nbCouleursDispo++;
-                                    couleurDispo = k;
-                                }
-                            }
-                            if (nbCouleursDispo == 1)
-                            {
-                                graph.sommets[couleurDispo].couleur = graph.sommets[j].couleur;
-                                couleurs[couleurDispo] = graph.sommets[j].couleur;
-                                nbCouleurs++;
-                            }
-                        }
-
-
+                        break;
                     }
-                    if (!ok)
-                    {
-                        couleur++;
-                    }
-
-
-
-
                 }
-                graph.sommets[i].couleur = couleur;
-                couleurs[i] = couleur;
-                nbCouleurs++;
-
-
             }
 
+            // On a trouvé la solution. On met à jour la grille
+            for (int i = 0; i < sommetsTries.Count; i++)
+            {
+                this.grid.Cells[(int)(i / 9)][i % 9] = this.sommets.ElementAt(i).getCouleur();
+
+            }
         }
 
 
     }
-
-
-
-
-
-    //Fonction qui recupère un sudoku, le convertit en graphe, et qui retourne un sudoku résolu
-    public SudokuGrid Convert()
-    {
-        //On crée un nouveau sudoku à partir du sudoku passé en paramètre
-        SudokuGrid sudokuResolu = new SudokuGrid();
-
-        //On remet chaque sommet du graph dans le sudoku
-        for (int i = 0; i < graph.nbSommets; i++)
-        {
-            sudokuResolu.Cells[graph.sommets[i].x][graph.sommets[i].y] = graph.sommets[i].couleur;
-        }
-        //On retourne le sudoku résolu
-        return sudokuResolu;
-
-
-    }
-
-
-
-
-
-
-
 }
