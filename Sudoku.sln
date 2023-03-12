@@ -30,9 +30,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Z3.LinqBinding", "Z3.LinqBi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sudoku.RecuitSimule", "Sudoku.RecuitSimule\Sudoku.RecuitSimule.csproj", "{5E5BB862-191F-4573-8503-C9067235A2E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sudoku.GraphColoring", "Sudoku.GraphColoring\Sudoku.GraphColoring.csproj", "{34E38A1A-FAEE-4FF9-B075-3922BF64C84E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sudoku.GraphColoring", "Sudoku.GraphColoring\Sudoku.GraphColoring.csproj", "{34E38A1A-FAEE-4FF9-B075-3922BF64C84E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sudoku.GraphColoringv2", "Sudoku.GraphColoringv2\Sudoku.GraphColoringv2.csproj", "{5A6830FC-A509-4DE6-B7AC-299A52209494}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sudoku.GraphColoringv2", "Sudoku.GraphColoringv2\Sudoku.GraphColoringv2.csproj", "{5A6830FC-A509-4DE6-B7AC-299A52209494}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sudoku.CSP", "Sudoku.CSP\Sudoku.CSP.csproj", "{B65B99DD-75BD-4AAD-B2A1-144A1E9F19C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -166,12 +168,40 @@ Global
 		{5E5BB862-191F-4573-8503-C9067235A2E9}.Release|x86.Build.0 = Release|Any CPU
 		{34E38A1A-FAEE-4FF9-B075-3922BF64C84E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{34E38A1A-FAEE-4FF9-B075-3922BF64C84E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34E38A1A-FAEE-4FF9-B075-3922BF64C84E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{34E38A1A-FAEE-4FF9-B075-3922BF64C84E}.Debug|x64.Build.0 = Debug|Any CPU
+		{34E38A1A-FAEE-4FF9-B075-3922BF64C84E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{34E38A1A-FAEE-4FF9-B075-3922BF64C84E}.Debug|x86.Build.0 = Debug|Any CPU
 		{34E38A1A-FAEE-4FF9-B075-3922BF64C84E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34E38A1A-FAEE-4FF9-B075-3922BF64C84E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34E38A1A-FAEE-4FF9-B075-3922BF64C84E}.Release|x64.ActiveCfg = Release|Any CPU
+		{34E38A1A-FAEE-4FF9-B075-3922BF64C84E}.Release|x64.Build.0 = Release|Any CPU
+		{34E38A1A-FAEE-4FF9-B075-3922BF64C84E}.Release|x86.ActiveCfg = Release|Any CPU
+		{34E38A1A-FAEE-4FF9-B075-3922BF64C84E}.Release|x86.Build.0 = Release|Any CPU
 		{5A6830FC-A509-4DE6-B7AC-299A52209494}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5A6830FC-A509-4DE6-B7AC-299A52209494}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A6830FC-A509-4DE6-B7AC-299A52209494}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5A6830FC-A509-4DE6-B7AC-299A52209494}.Debug|x64.Build.0 = Debug|Any CPU
+		{5A6830FC-A509-4DE6-B7AC-299A52209494}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5A6830FC-A509-4DE6-B7AC-299A52209494}.Debug|x86.Build.0 = Debug|Any CPU
 		{5A6830FC-A509-4DE6-B7AC-299A52209494}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A6830FC-A509-4DE6-B7AC-299A52209494}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A6830FC-A509-4DE6-B7AC-299A52209494}.Release|x64.ActiveCfg = Release|Any CPU
+		{5A6830FC-A509-4DE6-B7AC-299A52209494}.Release|x64.Build.0 = Release|Any CPU
+		{5A6830FC-A509-4DE6-B7AC-299A52209494}.Release|x86.ActiveCfg = Release|Any CPU
+		{5A6830FC-A509-4DE6-B7AC-299A52209494}.Release|x86.Build.0 = Release|Any CPU
+		{B65B99DD-75BD-4AAD-B2A1-144A1E9F19C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B65B99DD-75BD-4AAD-B2A1-144A1E9F19C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B65B99DD-75BD-4AAD-B2A1-144A1E9F19C5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B65B99DD-75BD-4AAD-B2A1-144A1E9F19C5}.Debug|x64.Build.0 = Debug|Any CPU
+		{B65B99DD-75BD-4AAD-B2A1-144A1E9F19C5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B65B99DD-75BD-4AAD-B2A1-144A1E9F19C5}.Debug|x86.Build.0 = Debug|Any CPU
+		{B65B99DD-75BD-4AAD-B2A1-144A1E9F19C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B65B99DD-75BD-4AAD-B2A1-144A1E9F19C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B65B99DD-75BD-4AAD-B2A1-144A1E9F19C5}.Release|x64.ActiveCfg = Release|Any CPU
+		{B65B99DD-75BD-4AAD-B2A1-144A1E9F19C5}.Release|x64.Build.0 = Release|Any CPU
+		{B65B99DD-75BD-4AAD-B2A1-144A1E9F19C5}.Release|x86.ActiveCfg = Release|Any CPU
+		{B65B99DD-75BD-4AAD-B2A1-144A1E9F19C5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
