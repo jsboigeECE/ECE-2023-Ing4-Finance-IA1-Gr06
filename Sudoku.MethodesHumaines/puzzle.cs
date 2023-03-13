@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Sudoku.MethodesHumaines;
 
-internal sealed class puzzle
+internal sealed class Puzzle
 {
     public readonly ReadOnlyCollection<Region> Rows;
     public readonly ReadOnlyCollection<Region> Columns;
